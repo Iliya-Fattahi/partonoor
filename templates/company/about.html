@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load persian image_tags %}
+{% block content %}
+<header class="page-head"><div class="container">{% include "partials/breadcrumbs.html" with items=breadcrumb_items %}<span class="kicker">فلسفه {{ site_settings.company_name_fa }}</span><h1>درباره‌ی {{ site_settings.company_name_fa }}</h1>{% if site_settings.slogan %}<p>{{ site_settings.slogan }}</p>{% endif %}</div></header>
+{% for s in sections %}
+<section class="section {% if forloop.counter|divisibleby:2 %}on-deep{% endif %}"><div class="container intro" {% if not s.image and not s.video %}style="grid-template-columns:4fr 8fr"{% endif %}>
+  {% if s.image and forloop.counter|divisibleby:2 %}<figure class="intro__img" style="margin:0">{% pic s.image alt=s.title sizes="(max-width:860px) 100vw, 45vw" %}</figure>{% endif %}
+  <div class="reveal">{% if s.title %}<h2 class="h2">{{ s.title }}</h2>{% endif %}<div class="lead">{{ s.content|linebreaks }}</div></div>
+  {% if s.image and not forloop.counter|divisibleby:2 %}<figure class="intro__img" style="margin:0">{% pic s.image alt=s.title sizes="(max-width:860px) 100vw, 45vw" %}</figure>{% elif s.video %}<div class="video__frame"><video controls preload="none" playsinline><source src="{{ s.video.url }}"></video></div>{% endif %}
+</div></section>
+{% empty %}
+<section class="section"><div class="container intro" style="grid-template-columns:4fr 8fr"><div><span class="kicker">نگاه ما</span></div><div class="lead"><p>نور مسئول، نوری است که از انرژی آگاه است؛ از تاریکی نمی‌ترسد؛ و از انسان فراتر می‌اندیشد.</p><p>متن کامل این صفحه را از بخش «درباره شرکت» در پنل مدیریت وارد کنید.</p></div></div></section>
+{% endfor %}
+{% if team %}<section class="section on-deep"><div class="container"><span class="kicker">تیم</span><h2 class="h2" style="margin-bottom:2rem">افرادی که نور را می‌سازند</h2><div class="grid-works">{% for m in team %}<div><div class="work" style="cursor:default">{% pic m.photo alt=m.name sizes="(max-width:720px) 50vw, 25vw" %}</div><h3 style="margin:.8rem 0 0;font-size:1.05rem">{{ m.name }}</h3><span class="meta">{{ m.role }}</span></div>{% endfor %}</div></div></section>{% endif %}
+<section class="section cta"><div class="container cta__in"><h2>با ما درباره‌ی پروژه‌تان صحبت کنید</h2><div class="cta__side"><a class="btn btn--gold btn--lg" href="{% url 'contact:index' %}#consultation">درخواست مشاوره</a></div></div></section>
+{% endblock %}

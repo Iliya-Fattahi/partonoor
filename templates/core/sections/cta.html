@@ -1,0 +1,10 @@
+<section class="section cta">
+  <div class="container cta__in reveal">
+    <h2>{{ section.title|default:"پروژه‌ی نورپردازی شهر یا مجموعه‌ی خود را با ما در میان بگذارید" }}</h2>
+    <div class="cta__side">
+      <p>{{ section.subtitle|default:"پروژه‌ها فرم سفارش ندارند؛ هر پروژه با گفت‌وگو و نیازسنجی آغاز می‌شود." }}</p>
+      <a class="btn btn--gold btn--lg" href="{{ section.cta_url|default:'/contact/#consultation' }}">{{ section.cta_label|default:"درخواست مشاوره" }}</a>
+      {% if site_settings.phone %}<span class="cta__phone">{{ site_settings.phone }}</span>{% endif %}
+    </div>
+  </div>
+</section>

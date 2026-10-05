@@ -1,0 +1,12 @@
+{% load persian image_tags %}
+<section class="section">
+  <div class="container intro">
+    {% if section.image %}<figure class="intro__img reveal" style="margin:0">{% pic section.image alt=section.title sizes="(max-width:860px) 100vw, 45vw" %}</figure>{% endif %}
+    <div class="reveal">
+      <span class="kicker">{{ section.kicker|default:"فلسفه پرتو نور" }}</span>
+      <blockquote>{{ section.title|default:"نور مسئول" }}</blockquote>
+      <div class="lead">{{ section.subtitle|linebreaks }}</div>
+      <a class="tlink" href="{% url 'company:about' %}">بیشتر درباره‌ی ما</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,11 @@
+{% load image_tags %}{% if it.media_type == "video" and it.video %}
+<a class="work work--video" data-lightbox="works" data-type="video" data-caption="{{ it.title|default:it.caption }}" href="{{ it.video.url }}" aria-label="پخش ویدیو: {{ it.title|default:it.category.title }}">
+  {% if it.video_poster %}<img src="{{ it.video_poster.url }}" alt="{{ it.alt_text|default:it.title|default:it.category.title }}" loading="lazy" width="800" height="600" decoding="async">{% endif %}
+  <span class="work__cap">{{ it.title }}<small>{{ it.category.title }}</small></span>
+</a>
+{% elif it.image %}
+<a class="work" data-lightbox="works" data-caption="{{ it.title }}{% if it.caption %} — {{ it.caption }}{% endif %}" data-alt="{{ it.alt_text|default:it.title|default:it.category.title }}" href="{{ it.image.url }}" aria-label="نمایش بزرگ: {{ it.title|default:it.category.title }}">
+  <img src="{{ it.image|webp_medium }}" srcset="{{ it.image|image_srcset }}" sizes="(max-width:720px) 100vw, (max-width:1100px) 50vw, 400px" alt="{{ it.alt_text|default:it.title|default:it.category.title }}" loading="{% if eager %}eager{% else %}lazy{% endif %}" width="800" height="600" decoding="async">
+  <span class="work__cap">{{ it.title }}<small>{{ it.category.title }}</small></span>
+</a>
+{% endif %}

@@ -1,0 +1,56 @@
+/* Admin skin: navy/gold, Estedad Variable, calmer density — content managers, not developers */
+@font-face{font-family:"Estedad Variable";font-weight:100 900;font-display:swap;src:url("../../fonts/estedad-latin-wght-normal.woff2") format("woff2");unicode-range:U+0000-00FF,U+0131,U+2000-200B,U+200F-206F,U+20AC,U+2122,U+2212,U+FEFF}
+@font-face{font-family:"Estedad Variable";font-weight:100 900;font-display:swap;src:url("../../fonts/estedad-arabic-wght-normal.woff2") format("woff2");unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0898-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
+body,input,select,textarea,button{font-family:var(--font-family-primary)}
+:root{--primary:#0d1f3c;--secondary:#b9974f;--accent:#b9974f;--primary-fg:#fff;--header-bg:#0d1f3c;--header-color:#fff;--header-branding-color:#d6b977;--header-link-color:#fff;--breadcrumbs-bg:#13284a;--breadcrumbs-fg:#d6b977;--breadcrumbs-link-fg:#fff;--link-fg:#13284a;--link-hover-color:#8f6f2e;--button-bg:#0d1f3c;--button-hover-bg:#1c3761;--default-button-bg:#b9974f;--default-button-hover-bg:#d6b977;--object-tools-bg:#13284a;--body-bg:#f4f1ea;--font-family-primary:"Estedad Variable",Tahoma,sans-serif}
+body,input,select,textarea,button{font-family:var(--font-family-primary)}
+#header{padding:10px 24px}
+#branding h1{font-weight:800;font-size:1.15rem}
+.module{border-radius:4px;border:1px solid #dcd6c8;background:#fff}
+.module caption,.module h2{background:#13284a;color:#fff;font-weight:700;text-transform:none}
+.default,input[type=submit].default{color:#0d1f3c !important;font-weight:800}
+.button,input[type=submit],input[type=button],.submit-row input{border-radius:3px}
+#changelist table thead th{background:#ece7da}
+.row-form-errors,.errornote{border-radius:3px}
+td img,.field-preview img{border-radius:3px}
+.inline-group .tabular td.original p{display:none}
+.quill-rtl .ql-editor{direction:rtl;text-align:right;font-size:16px;line-height:2;min-height:320px}
+.ql-toolbar.ql-snow{border-color:#dcd6c8;background:#f4f1ea}
+.ql-container.ql-snow{border-color:#dcd6c8;background:#fff}
+#site-name,#site-name a,#content h1,.dashboard #content h1,#content-main h2,.module caption,.module h2{font-weight:700!important}
+#user-tools,#user-tools a{font-weight:500}
+
+/* ---- Readability pass: darker text, larger sizes (the client reads this all day) ---- */
+:root{--body-fg:#0d1f3c;--body-quiet-color:#33425f;--body-loud-color:#071224;--darkened-bg:#ece7da;--border-color:#c9c2b0;--hairline-color:#d8d2c3;--message-success-bg:#dff3e4;--message-warning-bg:#fff1c9;--message-error-bg:#fde0de;
+  --font-size-base:16px}
+html{font-size:16px}
+body{font-size:16px;line-height:1.75;color:#0d1f3c;-webkit-font-smoothing:antialiased}
+#content h1,.dashboard #content h1{color:#071224!important;font-size:1.6rem}
+label,.form-row label,.aligned label{color:#0d1f3c!important;font-size:1rem!important;font-weight:700!important}
+.form-row .help,.help,.help-tooltip,.timezonewarning{color:#33425f!important;font-size:.92rem!important;line-height:1.7}
+.form-row{padding:14px 16px}
+input[type=text],input[type=password],input[type=email],input[type=url],input[type=number],input[type=date],input[type=time],textarea,select,.vTextField{font-size:1rem!important;color:#071224!important;background:#fff!important;border:1px solid #9aa3b6!important;padding:9px 12px!important;border-radius:4px}
+input:focus,textarea:focus,select:focus{border-color:#8f6f2e!important;outline:2px solid rgba(185,151,79,.35)}
+.module caption,.module h2,.inline-group h2{font-size:1rem!important}
+#changelist table thead th,#changelist table thead th a{color:#071224!important;font-size:.95rem}
+#changelist table td,#changelist table th{font-size:1rem;color:#0d1f3c}
+#nav-sidebar,#nav-sidebar a,#nav-sidebar .module th,#nav-sidebar .module td{font-size:.98rem!important;color:#0d1f3c}
+#nav-sidebar .module caption,#nav-sidebar .module caption a{color:#fff!important;font-size:.98rem!important}
+#nav-filter{font-size:.95rem!important;color:#071224}
+#nav-filter::placeholder{color:#4a5875}
+.breadcrumbs,.breadcrumbs a{font-size:.95rem}
+#user-tools,#user-tools a{font-size:.9rem!important;color:#fff!important}
+.object-tools a{font-size:.9rem}
+.paginator,.paginator a,.actions label,.actions span{color:#0d1f3c!important;font-size:.95rem!important}
+.button,input[type=submit],input[type=button],.submit-row input,.submit-row a.button{font-size:.98rem!important;font-weight:700;padding:9px 16px}
+.errornote,.errorlist li{font-size:.98rem}
+td img{max-height:56px}
+.readonly{color:#0d1f3c;font-size:1rem}
+.aligned .file-upload,.file-upload a{font-size:.95rem;color:#0d1f3c}
+.messagelist li{font-size:1rem;color:#0d1f3c}
+.dashboard .module caption{font-size:1rem}
+#content h2{color:#071224}
+.module h2,.module caption,.inline-group h2{color:#fff!important}
+#user-tools,#user-tools a,#user-tools button{font-size:.95rem!important;text-transform:none}
+.object-tools a,.object-tools a:link{font-size:1rem!important;padding:6px 16px}
+select{min-width:16rem;max-width:100%}

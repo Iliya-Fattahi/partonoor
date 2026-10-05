@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load image_tags %}
+{% block structured_data %}<script type="application/ld+json">{{ service_ld|safe }}</script>{% endblock %}
+{% block content %}
+<header class="page-head"><div class="container">{% include "partials/breadcrumbs.html" with items=breadcrumb_items %}<h1>{{ service.title }}</h1><p>{{ service.short_description }}</p></div></header>
+<section class="section"><div class="container intro" style="grid-template-columns:7fr 5fr">
+  <div class="lead" style="color:#dbe4f5">{{ service.full_description|linebreaks }}<p><a class="btn btn--gold" href="{% url 'contact:index' %}#consultation">درخواست مشاوره</a></p></div>
+  {% if service.main_image %}<figure class="intro__img" style="margin:0">{% pic service.main_image alt=service.title sizes="(max-width:860px) 100vw, 40vw" style="aspect-ratio:4/5" eager=True %}</figure>{% endif %}
+</div></section>
+<section class="section on-deep" style="padding:3rem 0"><div class="container">
+  <h2 class="h2" style="font-size:1.4rem">مراحل دیگر کار با ما</h2>
+  <ul class="svc-chips">{% for o in other_services %}<li><a href="{{ o.get_absolute_url }}">{{ o.title }}</a></li>{% endfor %}</ul>
+  <p style="margin-top:1.6rem" class="lead">نتیجه‌ی این مراحل را روی یک پروژه‌ی واقعی ببینید: <a class="tlink" href="{% url 'projects:list' %}">پروژه‌ها و مطالعه‌ی موردی هفت‌خان رستم</a>.</p>
+</div></section>
+{% endblock %}

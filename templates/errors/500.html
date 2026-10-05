@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block robots %}noindex, nofollow{% endblock %}
+{% block content %}
+<section class="err"><div class="container"><div class="code">500</div><h1 class="h2" style="margin:.6rem 0 .4rem">خطای سرور</h1><p class="lead">مشکلی پیش آمد. لطفاً کمی بعد دوباره تلاش کنید.</p><p style="margin-top:1.8rem"><a class="btn btn--gold btn--lg" href="{% url 'home' %}">بازگشت به صفحه اصلی</a> &nbsp; <a class="tlink" href="{% url 'gallery:index' %}">دیدن آثار</a></p></div></section>
+{% endblock %}

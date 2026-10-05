@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load persian image_tags %}
+{% block content %}
+<header class="page-head"><div class="container">{% include "partials/breadcrumbs.html" with items=breadcrumb_items %}<h1>خدمات و راهکارها</h1><p>هر پروژه با شناخت شهر آغاز می‌شود و تا نصب و پشتیبانی ادامه می‌یابد.</p></div></header>
+<section class="section"><div class="container">
+  {% for s in services %}
+  <article class="svc-feature">
+    {% if s.main_image %}<a class="svc-feature__img" href="{{ s.get_absolute_url }}">{% pic s.main_image alt=s.title sizes="(max-width:860px) 100vw, 50vw" %}</a>{% endif %}
+    <div><i>{{ forloop.counter|fa_digits }}</i><h2 class="h2" style="font-size:1.9rem;margin-top:.3rem">{{ s.title }}</h2><p class="lead">{{ s.short_description }}</p><a class="tlink" href="{{ s.get_absolute_url }}">جزئیات این خدمت</a></div>
+  </article>
+  {% empty %}<div class="empty"><h3>خدماتی ثبت نشده است</h3></div>{% endfor %}
+</div></section>
+<section class="section cta"><div class="container cta__in"><h2>با کدام مرحله شروع کنیم؟</h2><div class="cta__side"><a class="btn btn--gold btn--lg" href="{% url 'contact:index' %}#consultation">درخواست مشاوره</a></div></div></section>
+{% endblock %}

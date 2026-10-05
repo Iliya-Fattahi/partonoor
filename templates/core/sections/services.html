@@ -1,0 +1,15 @@
+{% load persian %}
+<section class="section on-light" id="services">
+  <div class="container">
+    <div style="max-width:40rem;margin-bottom:3rem" class="reveal">
+      <span class="kicker">{{ section.kicker|default:"خدمات و راهکارها" }}</span>
+      <h2 class="h2">{{ section.title|default:"از نخستین بازدید تا پشتیبانی" }}</h2>
+      {% if section.subtitle %}<p class="lead">{{ section.subtitle }}</p>{% endif %}
+    </div>
+    <div class="svc-rows">
+      {% for s in services|slice:":8" %}
+      <a class="svc-row reveal" href="{{ s.get_absolute_url }}"><i>{{ forloop.counter|fa_digits }}</i><h3>{{ s.title }}</h3><p>{{ s.short_description }}</p></a>
+      {% endfor %}
+    </div>
+  </div>
+</section>

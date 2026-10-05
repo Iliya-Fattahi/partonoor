@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load image_tags %}
+{% block content %}
+<header class="page-head"><div class="container">{% include "partials/breadcrumbs.html" with items=breadcrumb_items %}<h1>ریسه نوری {{ site_settings.company_name_fa }}</h1><p>محصول قابل سفارش شرکت؛ با ثبت درخواست، برای هماهنگی نهایی با شما تماس می‌گیریم.</p></div></header>
+<section class="section"><div class="container">
+  {% for p in products %}<article class="art-feature"><div><h2>{{ p.title }}</h2><p>{{ p.short_description }}</p><a class="tlink" href="{{ p.get_absolute_url }}">مشاهده و ثبت سفارش</a></div><a href="{{ p.get_absolute_url }}">{% pic p.main_image alt=p.title sizes="(max-width:860px) 100vw, 50vw" %}</a></article>
+  {% empty %}<div class="empty"><h3>محصولی ثبت نشده است</h3></div>{% endfor %}
+</div></section>
+{% endblock %}

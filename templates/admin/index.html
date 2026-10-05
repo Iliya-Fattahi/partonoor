@@ -1,0 +1,69 @@
+{% extends "admin/base_site.html" %}
+{% block extrastyle %}{{ block.super }}
+<style>
+  .pn{direction:rtl;font-family:"Estedad Variable",Tahoma,sans-serif;max-width:1180px;margin:0 auto}
+  .pn h1{font-size:1.7rem;margin:.2rem 0 .3rem;color:#0d1f40}
+  .pn p.sub{color:#2b3a57;margin:0 0 1.6rem}
+  .pn-alert{display:flex;flex-wrap:wrap;gap:.7rem;margin-bottom:1.6rem}
+  .pn-alert a{background:#fff7e0;border:1px solid #e3c986;color:#6b5210;padding:.6rem 1rem;border-radius:10px;font-weight:700;text-decoration:none}
+  .pn-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+  .pn-tile{position:relative;background:#fff;border:1px solid #dfe4ef;border-radius:14px;padding:1.2rem 1.2rem 1rem;display:flex;flex-direction:column;gap:.15rem;text-decoration:none;color:#0d1f40;transition:.2s}
+  .pn-tile:hover{border-color:#c9a45c;box-shadow:0 10px 26px -14px rgba(13,31,64,.4);transform:translateY(-2px)}
+  .pn-tile .ic{font-size:1.7rem}
+  .pn-tile b{font-size:1.05rem}
+  .pn-tile span.h{color:#33425f;font-size:.85rem}
+  .pn-tile .bd{position:absolute;top:12px;left:12px;background:#c9432f;color:#fff;border-radius:999px;font-size:.85rem;font-weight:800;padding:.1rem .6rem}
+  .pn-tile .ad{margin-top:.7rem;align-self:flex-start;font-size:.92rem;background:#0d1f40;color:#fff;padding:.25rem .8rem;border-radius:999px;text-decoration:none}
+  .pn h2{margin:2rem 0 .8rem;font-size:1.1rem;color:#0d1f40}
+  .pn-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+  .pn-box{background:#fff;border:1px solid #dfe4ef;border-radius:14px;padding:1rem 1.2rem}
+  .pn-box ul{list-style:none;margin:0;padding:0}.pn-box li{padding:.45rem 0;border-bottom:1px solid #eef1f7}.pn-box li:last-child{border:0}
+  .pn-empty{color:#4a5875;font-size:.9rem}
+</style>
+{% endblock %}
+{% block content %}
+<div class="pn">
+  <h1>داشبورد پرتو نور</h1>
+  <p class="sub">هر بخش سایت را از همین‌جا مدیریت کنید. برای شروع، یکی از کاشی‌ها را بزنید.</p>
+
+  {% if stats.orders_new or stats.consultations_new or stats.messages_new or stats.review_pending %}
+  <div class="pn-alert">
+    {% if stats.orders_new %}<a href="{% url 'admin:products_productorder_changelist' %}?status__exact=new">🧾 {{ stats.orders_new }} سفارش جدید ریسه</a>{% endif %}
+    {% if stats.consultations_new %}<a href="{% url 'admin:contact_consultationrequest_changelist' %}?status__exact=new">📩 {{ stats.consultations_new }} درخواست مشاوره‌ی جدید</a>{% endif %}
+    {% if stats.messages_new %}<a href="{% url 'admin:contact_contactmessage_changelist' %}?status__exact=new">✉ {{ stats.messages_new }} پیام جدید</a>{% endif %}
+    {% if stats.review_pending %}<a href="{% url 'admin:gallery_galleryitem_changelist' %}?needs_review__exact=1">🔎 {{ stats.review_pending }} عکس در انتظار تأیید دسته‌بندی</a>{% endif %}
+  </div>
+  {% endif %}
+
+  <div class="pn-tiles">
+    {% for t in tiles %}
+    <div class="pn-tile">
+      {% if t.badge == "orders_new" and stats.orders_new %}<span class="bd">{{ stats.orders_new }}</span>{% endif %}
+      {% if t.badge == "consultations_new" and stats.consultations_new %}<span class="bd">{{ stats.consultations_new }}</span>{% endif %}
+      {% if t.badge == "messages_new" and stats.messages_new %}<span class="bd">{{ stats.messages_new }}</span>{% endif %}
+      <a href="{{ t.url }}" style="text-decoration:none;color:inherit"><span class="ic">{{ t.icon }}</span><br><b>{{ t.title }}</b><br><span class="h">{{ t.hint }}</span></a>
+      {% if t.add %}<a class="ad" href="{{ t.add }}">+ افزودن</a>{% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if pending_works %}
+  <h2>آثار در انتظار تأیید</h2>
+  <div class="pn-box"><p class="pn-empty" style="margin-top:0">دسته‌ی این عکس‌ها قطعی نیست. دسته را درست کنید و «تأیید» بزنید، یا مخفی‌شان کنید.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px">
+      {% for w in pending_works %}<a href="{% url 'admin:gallery_galleryitem_change' w.pk %}" style="text-decoration:none;color:inherit">{% if w.image %}<img src="{{ w.image.url }}" alt="" style="width:100%;height:90px;object-fit:cover;border-radius:3px">{% endif %}<small>{{ w.title|default:"بدون عنوان" }}</small></a>{% endfor %}
+    </div>
+    <p style="margin-bottom:0"><a href="{% url 'admin:gallery_galleryitem_changelist' %}?needs_review__exact=1">مشاهده و تأیید گروهی ←</a></p>
+  </div>
+  {% endif %}
+
+  <div class="pn-cols">
+    <div class="pn-box"><h2 style="margin-top:0">آخرین سفارش‌های ریسه</h2>
+      <ul>{% for o in recent_orders %}<li><a href="{% url 'admin:products_productorder_change' o.pk %}">{{ o.name }} — {{ o.city }} — {{ o.quantity }}</a> <small>({{ o.get_status_display }})</small></li>{% empty %}<li class="pn-empty">هنوز سفارشی ثبت نشده است.</li>{% endfor %}</ul></div>
+    <div class="pn-box"><h2 style="margin-top:0">آخرین درخواست‌های مشاوره</h2>
+      <ul>{% for c in recent_consultations %}<li>{{ c.name }} — {{ c.phone }} <small>({{ c.get_status_display }})</small></li>{% empty %}<li class="pn-empty">هنوز درخواستی ثبت نشده است.</li>{% endfor %}</ul></div>
+    <div class="pn-box"><h2 style="margin-top:0">آخرین مقالات</h2>
+      <ul>{% for a in recent_articles %}<li><a href="{% url 'admin:articles_article_change' a.pk %}">{{ a.title }}</a></li>{% empty %}<li class="pn-empty">مقاله‌ای نیست.</li>{% endfor %}</ul></div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load image_tags persian %}
+{% block content %}
+<header class="page-head"><div class="container">{% include "partials/breadcrumbs.html" with items=breadcrumb_items %}<h1>پروژه‌ها</h1><p>مطالعه‌ی موردی پروژه‌هایی که از طراحی تا نصب انجام داده‌ایم. برای همکاری، مستقیم با ما تماس بگیرید.</p></div></header>
+<section class="section"><div class="container">
+  {% if categories %}<nav class="tabs-line"><a class="{% if not active_category %}is-active{% endif %}" href="{% url 'projects:list' %}">همه</a>{% for c in categories %}<a class="{% if active_category.pk == c.pk %}is-active{% endif %}" href="?category={{ c.slug }}">{{ c.title }}</a>{% endfor %}</nav>{% endif %}
+  {% for p in page_obj %}
+  <article class="art-feature" style="margin-bottom:3rem"><div><span class="meta">{% if p.category %}{{ p.category.title }}{% endif %}{% if p.city %} · {{ p.city }}{% endif %}{% if p.year %} · {{ p.year }}{% endif %}</span><h2>{{ p.title }}</h2><p>{{ p.short_description }}</p><a class="tlink" href="{{ p.get_absolute_url }}">مطالعه‌ی پروژه</a></div><a href="{{ p.get_absolute_url }}"><img src="{{ p.cover_image|webp_medium }}" alt="{{ p.title }}" loading="lazy" width="800" height="500"></a></article>
+  {% empty %}<div class="empty"><h3>هنوز پروژه‌ای منتشر نشده است</h3></div>{% endfor %}
+  {% include "partials/pagination.html" %}
+</div></section>
+{% endblock %}

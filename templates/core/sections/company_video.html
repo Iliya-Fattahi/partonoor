@@ -1,0 +1,6 @@
+{% if section.video %}
+<section class="video">
+  <div class="video__frame"><video controls preload="none" playsinline {% if section.video_poster %}poster="{{ section.video_poster.url }}"{% endif %} aria-label="{{ section.title }}"><source src="{{ section.video.url }}"></video></div>
+  <div class="container video__cap"><span><b style="color:#fff">{{ section.title|default:"ویدیوی معرفی" }}</b></span>{% if section.subtitle %}<span>{{ section.subtitle }}</span>{% endif %}</div>
+</section>
+{% endif %}

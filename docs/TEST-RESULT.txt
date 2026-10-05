@@ -1,0 +1,11 @@
+Final delivery — 2026-10-04 (after contact/maintenance/homepage-CMS/admin-readability changes)
+python manage.py check:
+System check identified no issues (0 silenced).
+python manage.py makemigrations --check --dry-run:
+No changes detected
+python manage.py check --deploy (production settings):
+System check identified no issues (0 silenced).
+python manage.py test (serial, sqlite_test):
+Ran 138 tests in 235.065s
+
+OK

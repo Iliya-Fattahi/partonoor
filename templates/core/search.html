@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="page-head"><div class="container">{% include "partials/breadcrumbs.html" with items=breadcrumb_items %}<h1>{% if query %}نتایج جست‌وجوی «{{ query }}»{% else %}جست‌وجو در سایت{% endif %}</h1>
+  <form class="search-line" method="get" role="search" style="margin-top:1.6rem;max-width:34rem"><label class="sr-only" for="q">عبارت جست‌وجو</label><input id="q" type="search" name="q" value="{{ query }}" placeholder="عبارت موردنظر…"><button type="submit">جست‌وجو</button></form></div></header>
+<section class="section"><div class="container">
+  {% if query %}
+    {% for key, page in results.items %}{% if page %}
+      <h2 class="h2" style="font-size:1.3rem;margin-top:1.6rem">{% if key == "projects" %}پروژه‌ها{% elif key == "services" %}خدمات{% elif key == "articles" %}مقالات{% elif key == "works" %}آثار{% else %}محصولات{% endif %}</h2>
+      <ul class="wi-list" style="margin-bottom:1.5rem">{% for r in page %}<li>{% if key == "works" %}<a href="{% url 'gallery:category' r.category.slug %}"><b style="font-size:1.05rem">{{ r.title|default:r.caption }}</b><small>{{ r.category.title }}</small></a>{% else %}<a href="{{ r.get_absolute_url }}"><b style="font-size:1.05rem">{{ r.title }}</b></a>{% endif %}</li>{% endfor %}</ul>
+    {% endif %}{% endfor %}
+    {% if not results.projects and not results.services and not results.articles and not results.products and not results.works %}<div class="empty"><h3>نتیجه‌ای پیدا نشد</h3><p>عبارت دیگری را امتحان کنید.</p></div>{% endif %}
+  {% else %}<div class="empty"><h3>عبارت موردنظر را بنویسید</h3></div>{% endif %}
+</div></section>
+{% endblock %}

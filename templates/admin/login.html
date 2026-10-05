@@ -1,0 +1,20 @@
+{% load static %}<!DOCTYPE html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>ورود به پنل مدیریت | پرتو نور</title>
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+<style>body{min-height:100vh;display:grid;place-items:center;background:radial-gradient(60% 60% at 80% 0%,rgba(201,164,92,.18),transparent 60%),radial-gradient(60% 60% at 0% 100%,rgba(27,56,107,.7),transparent 70%),#0a1730}
+.lg{width:min(440px,92vw);background:rgba(13,31,64,.85);border:1px solid var(--line-strong);border-radius:18px;padding:2.4rem;box-shadow:var(--shadow)}
+.lg .brand{justify-content:center;margin-bottom:1.6rem}.lg .brand img{height:56px}.lg h1{font-size:1.3rem;text-align:center;margin-bottom:1.5rem}
+.lg .field{margin-bottom:1rem}.lg .field label{color:var(--muted)}.lg input{background:#0a1730;color:#fff;border-color:var(--line-strong)}</style></head>
+<body><div class="lg">
+  <div class="brand" style="justify-content:center">{% include "partials/brand.html" %}</div>
+  <h1>ورود به پنل مدیریت</h1>
+  {% if form.errors and not form.non_field_errors %}<div class="message message--error">لطفاً خطاهای زیر را اصلاح کنید.</div>{% endif %}
+  {% if form.non_field_errors %}{% for e in form.non_field_errors %}<div class="message message--error">{{ e }}</div>{% endfor %}{% endif %}
+  <form method="post" action="{{ app_path }}">{% csrf_token %}
+    <div class="field"><label for="id_username">نام کاربری</label>{{ form.username }}</div>
+    <div class="field"><label for="id_password">گذرواژه</label>{{ form.password }}</div>
+    <input type="hidden" name="next" value="{{ next }}">
+    <button class="btn btn--gold btn--lg btn--block" type="submit">ورود</button>
+  </form>
+  <p style="text-align:center;margin:1.2rem 0 0;font-size:.9rem"><a class="link-arrow" href="/">بازگشت به سایت</a></p>
+</div></body></html>

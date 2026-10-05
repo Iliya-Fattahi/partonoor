@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load image_tags persian %}
+{% block content %}
+<header class="page-head"><div class="container">{% include "partials/breadcrumbs.html" with items=breadcrumb_items %}<h1>{% if active_tag %}مقالات با برچسب «{{ active_tag.title }}»{% else %}مجله‌ی نورپردازی شهری{% endif %}</h1><p>مقالات تخصصی، ایده‌ها، متریال و فناوری، اخبار و رویدادها.</p></div></header>
+<section class="section" style="padding-top:2.6rem"><div class="container">
+  <form class="search-line" method="get" role="search"><label class="sr-only" for="q">جست‌وجو در مقالات</label><input id="q" type="search" name="q" value="{{ q }}" placeholder="جست‌وجو در مقالات…">{% if active_category %}<input type="hidden" name="category" value="{{ active_category.slug }}">{% endif %}<button type="submit">جست‌وجو</button></form>
+  <nav class="tabs-line" aria-label="دسته‌بندی مقالات"><a class="{% if not active_category %}is-active{% endif %}" href="{% url 'articles:list' %}">همه</a>{% for c in categories %}<a class="{% if active_category.pk == c.pk %}is-active{% endif %}" href="?category={{ c.slug }}">{{ c.title }}</a>{% endfor %}</nav>
+  {% if q %}<p style="color:var(--muted)">{{ page_obj.paginator.count|fa_digits }} مقاله برای «{{ q }}»</p>{% endif %}
+  {% for a in page_obj %}{% if forloop.first and page_obj.number == 1 and not q %}
+  <a class="art-feature" href="{{ a.get_absolute_url }}"><div><span class="meta">{{ a.category.title }}</span><h2>{{ a.title }}</h2><p>{{ a.excerpt }}</p><span class="tlink">خواندن مقاله</span></div>{% pic a.cover_image alt=a.title eager=True sizes="(max-width:860px) 100vw, 50vw" %}</a>
+  {% endif %}{% endfor %}
+  {% for a in page_obj %}{% if not forloop.first or page_obj.number != 1 or q %}
+  <a class="art-row" href="{{ a.get_absolute_url }}"><div><span class="meta">{{ a.category.title }}</span><h3>{{ a.title }}</h3><p>{{ a.excerpt|truncatechars:170 }}</p><span class="tlink">خواندن مقاله</span></div>{% pic a.cover_image alt=a.title sizes="(max-width:720px) 40vw, 240px" %}</a>
+  {% endif %}{% empty %}<div class="empty"><h3>مقاله‌ای پیدا نشد</h3><p>عبارت دیگری را جست‌وجو کنید یا همه‌ی مقالات را ببینید.</p></div>{% endfor %}
+  {% include "partials/pagination.html" %}
+</div></section>
+{% endblock %}

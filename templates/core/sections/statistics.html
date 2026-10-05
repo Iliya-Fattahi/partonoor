@@ -1,0 +1,4 @@
+{% load persian %}
+<section class="section on-deep"><div class="container"><ul class="steps" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));border-top:0;gap:2rem">
+{% for s in statistics %}<li><b style="display:block;font-size:2.6rem;font-weight:300;color:var(--gold-light)">{{ s.value|fa_digits }}</b><span style="color:var(--muted)">{{ s.label }}</span></li>{% endfor %}
+</ul></div></section>

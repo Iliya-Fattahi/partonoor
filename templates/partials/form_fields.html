@@ -1,0 +1,13 @@
+{# usage: include "partials/form_fields.html" with form=form — renders every visible field + honeypot #}
+<div class="form-grid">
+  {% for field in form.visible_fields %}
+  <div class="field {% if field.name == 'message' or field.name == 'usage' %}field--full{% endif %}">
+    <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span style="color:#b0402f">*</span>{% endif %}</label>
+    {{ field }}
+    {% if field.help_text %}<small>{{ field.help_text }}</small>{% endif %}
+    {{ field.errors }}
+  </div>
+  {% endfor %}
+</div>
+{% for h in form.hidden_fields %}<div class="hp" aria-hidden="true">{{ h }}</div>{% endfor %}
+{% if form.non_field_errors %}<div class="message message--error">{{ form.non_field_errors }}</div>{% endif %}

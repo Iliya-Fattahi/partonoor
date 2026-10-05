@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load image_tags persian %}
+{% block structured_data %}
+{# SAFE: json_ld/breadcrumb_json_ld built server-side via json.dumps() — see apps/core/structured_data.py #}
+<script type="application/ld+json">{{ json_ld|safe }}</script>
+{% endblock %}
+{% block content %}
+<header class="article-head">
+  <div class="container">
+    {% include "partials/breadcrumbs.html" with items=breadcrumb_items %}
+    <span class="kicker">{{ article.category.title }}</span>
+    <h1>{{ article.title }}</h1>
+    <div class="byline">
+      {% if article.author_name %}<span>نویسنده: <b>{{ article.author_name }}</b></span>{% endif %}
+      {% if article.published_at %}<span>انتشار: <time datetime="{{ article.published_at|date:'c' }}">{{ article.published_at|jdate }}</time></span>{% endif %}
+      {% if article.updated_at.date != article.published_at.date %}<span>به‌روزرسانی: <time datetime="{{ article.updated_at|date:'c' }}">{{ article.updated_at|jdate }}</time></span>{% endif %}
+      <span>زمان مطالعه: {{ reading_minutes|fa_digits }} دقیقه</span>
+    </div>
+  </div>
+</header>
+<div class="article-cover"><div class="container"><img src="{{ article.cover_image|webp_full }}" srcset="{{ article.cover_image|image_srcset }}" sizes="100vw" alt="{{ article.title }}" fetchpriority="high" width="1600" height="540"></div></div>
+
+<section class="section on-light" style="padding-top:3.5rem">
+  <div class="container article-layout">
+    <aside class="toc" aria-label="فهرست مطالب">
+      {% if toc %}<b>فهرست مطالب</b><ol>{% for t in toc %}<li><a href="#{{ t.id }}">{{ t.title }}</a></li>{% endfor %}</ol>{% endif %}
+    </aside>
+    <div>
+      <div class="article-body">{{ body_html|safe }}</div>
+      {% if article.tags.all %}<ul class="tag-list" aria-label="برچسب‌ها">{% for t in article.tags.all %}<li><a rel="tag" href="{% url 'articles:list' %}?tag={{ t.slug }}">{{ t.title }}</a></li>{% endfor %}</ul>{% endif %}
+      <aside class="next-steps" aria-label="ادامه">
+        <h2>از مقاله تا پروژه</h2>
+        <p>پرتو نور این نگاه را در طراحی و اجرای المان‌های نوری شهری به کار می‌گیرد. برای دیدن فرایند کار و نمونه‌ی واقعی آن:</p>
+        <ul>
+          <li><a href="{% url 'services:list' %}">خدمات و راهکارهای ما: از بازدید تا پشتیبانی</a></li>
+          <li><a href="{% if featured_project %}{{ featured_project.get_absolute_url }}{% else %}{% url 'projects:list' %}{% endif %}">{% if featured_project %}مطالعه‌ی موردی پروژه‌ی {{ featured_project.title }}{% else %}پروژه‌ها و مطالعه‌ی موردی{% endif %}</a></li>
+          <li><a href="{% url 'gallery:index' %}">آثار و نمونه کارها</a></li>
+        </ul>
+        <a class="btn btn--dark" href="{% url 'contact:index' %}#consultation">درخواست مشاوره برای پروژه‌ی شما</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+{% if related %}
+<section class="section"><div class="container"><span class="kicker">بیشتر بخوانید</span><h2 class="h2">مقالات مرتبط</h2>
+  {% for a in related %}<a class="art-row" href="{{ a.get_absolute_url }}"><div><span class="meta">{{ a.category.title }}</span><h3>{{ a.title }}</h3></div>{% pic a.cover_image alt=a.title sizes="(max-width:720px) 40vw, 240px" %}</a>{% endfor %}</div></section>
+{% endif %}
+{% endblock %}

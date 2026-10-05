@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load persian %}
+{% block structured_data %}<script type="application/ld+json">{{ collection_ld|safe }}</script>{% endblock %}
+{% block content %}
+<header class="page-head">
+  <div class="container">
+    {% include "partials/breadcrumbs.html" with items=breadcrumb_items %}
+    <h1>{{ category.title }}</h1>
+    <p>{{ category.description|default:"نمونه‌هایی از این دسته که طراحی، ساخت و اجرا کرده‌ایم." }}</p>
+  </div>
+</header>
+<section class="section" style="padding-top:2.6rem">
+  <div class="container">
+    <nav class="tabs-line" aria-label="دسته‌بندی آثار">
+      <a href="{% url 'gallery:index' %}">همه‌ی آثار</a>
+      {% for cat in categories %}<a href="{{ cat.url }}" {% if cat.pk == category.pk %}class="is-active" aria-current="page"{% endif %}>{{ cat.title }}<small>{{ cat.count|fa_digits }}</small></a>{% endfor %}
+    </nav>
+    <div class="grid-works">
+      {% for it in items %}{% include "partials/work_card.html" with it=it eager=forloop.first %}{% endfor %}
+    </div>
+  </div>
+</section>
+<section class="section cta"><div class="container cta__in"><h2>«{{ category.title }}» برای شهر یا مجموعه‌ی شما؟</h2><div class="cta__side"><p>هر پروژه با نیازسنجی آغاز می‌شود؛ فرم سفارش ندارد.</p><a class="btn btn--gold btn--lg" href="{% url 'contact:index' %}#consultation">درخواست مشاوره</a>{% if featured_project %}<a class="tlink" href="{{ featured_project.get_absolute_url }}">مطالعه‌ی کامل یک پروژه: {{ featured_project.title }}</a>{% endif %}</div></div></section>
+{% endblock %}

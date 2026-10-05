@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% load image_tags %}
+{% block content %}
+<header class="page-head"><div class="container">{% include "partials/breadcrumbs.html" with items=breadcrumb_items %}<h1>کارگاه</h1><p>جایی که المان‌های نوری ساخته می‌شوند.</p></div></header>
+{% for b in blocks %}<section class="section {% if forloop.counter|divisibleby:2 %}on-deep{% endif %}"><div class="container intro"><div>{% if b.title %}<h2 class="h2">{{ b.title }}</h2>{% endif %}<div class="lead">{{ b.content|linebreaks }}</div></div>{% if b.image %}<figure class="intro__img" style="margin:0">{% pic b.image alt=b.title sizes="(max-width:860px) 100vw, 45vw" %}</figure>{% endif %}</div></section>
+{% empty %}<section class="section"><div class="container"><div class="empty"><h3>محتوای کارگاه به‌زودی اضافه می‌شود</h3></div></div></section>{% endfor %}
+{% endblock %}

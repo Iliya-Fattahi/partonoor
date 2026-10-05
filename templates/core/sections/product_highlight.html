@@ -1,0 +1,16 @@
+{% load image_tags %}
+{% if product %}
+<section class="on-light" id="risheh">
+  <div class="prod">
+    <div class="prod__body reveal" style="margin-inline-start:auto">
+      <span class="kicker">{{ section.kicker|default:"محصول قابل سفارش" }}</span>
+      <h2 class="h2">{{ section.title|default:product.title }}</h2>
+      <p class="lead">{{ section.subtitle|default:product.short_description }}</p>
+      <ul class="adv">{% for f in product.features.all|slice:":6" %}<li>{{ f.title }}</li>{% endfor %}</ul>
+      <div><a class="btn btn--dark btn--lg" href="{{ product.get_absolute_url }}#order">{{ section.cta_label|default:"ثبت سفارش ریسه" }}</a>
+      <a class="tlink" style="margin-inline-start:1.4rem" href="{{ product.get_absolute_url }}">جزئیات</a></div>
+    </div>
+    <div class="prod__img">{% if section.image %}{% pic section.image alt=section.title|default:product.title sizes="(max-width:860px) 100vw, 50vw" %}{% else %}{% pic product.main_image alt=product.title sizes="(max-width:860px) 100vw, 50vw" %}{% endif %}</div>
+  </div>
+</section>
+{% endif %}

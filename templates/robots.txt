@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /search/
+Disallow: /articles/upload-image/
+Allow: /static/
+Allow: /media/
+
+Sitemap: {{ site_url }}/sitemap.xml

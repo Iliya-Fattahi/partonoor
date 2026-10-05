@@ -1,0 +1,9 @@
+Django>=5.0,<5.1
+psycopg2-binary>=2.9
+django-environ>=0.11
+django-imagekit>=5.0
+python-magic>=0.4.27      # needs the system library libmagic (apt install libmagic1)
+Pillow>=10.0
+bleach>=6.1
+tinycss2>=1.2             # required by bleach.css_sanitizer (used in apps/core/sanitize.py)
+defusedxml>=0.7.1

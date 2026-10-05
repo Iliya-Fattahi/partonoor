@@ -1,0 +1,14 @@
+{# usage: {% include "partials/breadcrumbs.html" with items=breadcrumb_items %} items = list of dicts: [{"name": "...", "url": "..."|None}] — last item has url=None (current page) #}
+<nav class="breadcrumbs" aria-label="مسیر صفحه">
+  <ol>
+    {% for item in items %}
+    <li>
+      {% if item.url and not forloop.last %}
+        <a href="{{ item.url }}">{{ item.name }}</a>
+      {% else %}
+        <span aria-current="page">{{ item.name }}</span>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ol>
+</nav>

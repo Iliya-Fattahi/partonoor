@@ -1,0 +1,16 @@
+{% load persian %}
+<section class="section on-deep" id="process">
+  <div class="container process">
+    <div class="process__head reveal">
+      <span class="kicker">{{ section.kicker|default:"طراحی و ساخت اختصاصی" }}</span>
+      <h2 class="h2">{{ section.title|default:"ما محصول آماده نمی‌فروشیم؛ راهکار نوریِ هر شهر را می‌سازیم" }}</h2>
+      <p class="lead">{{ section.subtitle|default:"برای هر پروژه، متناسب با شهر، محیط و مفهوم آن، راهکار و المان نوری اختصاصی طراحی و اجرا می‌کنیم." }}</p>
+      <a class="btn btn--gold" href="{{ section.cta_url|default:'/contact/#consultation' }}">{{ section.cta_label|default:"پروژه‌تان را با ما در میان بگذارید" }}</a>
+    </div>
+    <ol class="steps">
+      {% for step in process_steps %}
+      <li class="step reveal" data-n="{{ forloop.counter|fa_digits }}"><div><h3>{{ step.title }}</h3>{% if step.description %}<p>{{ step.description }}</p>{% endif %}</div></li>
+      {% endfor %}
+    </ol>
+  </div>
+</section>

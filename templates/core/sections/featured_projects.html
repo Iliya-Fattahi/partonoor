@@ -1,0 +1,21 @@
+{% load persian image_tags %}
+{% for project in featured_projects|slice:":1" %}
+<section class="feature" id="haft-khan">
+  <div class="feature__hero">
+    {% if section.image %}{% pic section.image alt=section.title|default:project.title sizes="100vw" %}{% else %}{% pic project.cover_image alt=project.title sizes="100vw" %}{% endif %}
+    <div class="container"><div class="feature__text reveal">
+      <span class="kicker">{% if section.kicker %}{{ section.kicker }}{% else %}پروژه‌ی ویژه{% if project.city %} · {{ project.city }}{% endif %}{% endif %}</span>
+      <h2>{{ section.title|default:project.title }}</h2>
+      <p>{{ section.subtitle|default:project.short_description }}</p>
+      <a class="btn btn--gold btn--lg" href="{{ project.get_absolute_url }}">{{ section.cta_label|default:"مطالعه‌ی کامل پروژه" }}</a>
+    </div></div>
+  </div>
+  {% if project.stage_photos %}
+  <div class="film" aria-label="مراحل پروژه">
+    {% for p in project.stage_photos %}
+    <a href="{{ project.get_absolute_url }}#stage-{{ p.stage }}">{% pic p.image alt=p.alt sizes="(max-width:720px) 50vw, 25vw" %}<span><i>{{ forloop.counter|fa_digits }}</i>{{ p.label }}</span></a>
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>
+{% endfor %}

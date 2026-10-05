@@ -1,0 +1,3 @@
+{% load image_tags %}
+<section class="section on-deep"><div class="container"><span class="kicker">تیم</span><h2 class="h2" style="margin-bottom:2rem">{{ section.title|default:"تیم پرتو نور" }}</h2>
+<div class="grid-works">{% for m in team_members %}<div><div class="work" style="cursor:default">{% pic m.photo alt=m.name sizes="(max-width:720px) 50vw, 25vw" %}</div><h3 style="margin:.8rem 0 0;font-size:1.05rem">{{ m.name }}</h3><span class="meta">{{ m.role }}</span></div>{% endfor %}</div></div></section>

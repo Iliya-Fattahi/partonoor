@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fa" dir="rtl" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d1f40">
+<title>{{ seo.title }}</title>
+{% if seo.description %}<meta name="description" content="{{ seo.description }}">{% endif %}
+<link rel="canonical" href="{{ seo.canonical }}">
+<meta name="robots" content="{% block robots %}{{ seo.robots|default:'index, follow, max-image-preview:large' }}{% endblock %}">
+<meta property="og:type" content="{{ seo.og_type }}">
+<meta property="og:locale" content="fa_IR">
+<meta property="og:site_name" content="{{ seo.brand }}">
+<meta property="og:title" content="{{ seo.og_title }}">
+{% if seo.description %}<meta property="og:description" content="{{ seo.description }}">{% endif %}
+<meta property="og:url" content="{{ seo.canonical }}">
+<meta property="og:image" content="{{ seo.image }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ seo.og_title }}">
+{% if seo.description %}<meta name="twitter:description" content="{{ seo.description }}">{% endif %}
+<meta name="twitter:image" content="{{ seo.image }}">
+{% if seo.published %}<meta property="article:published_time" content="{{ seo.published|date:'c' }}">{% endif %}
+{% if seo.modified %}<meta property="article:modified_time" content="{{ seo.modified|date:'c' }}">{% endif %}
+
+{% if site_settings.favicon_svg %}<link rel="icon" type="image/svg+xml" href="{{ site_settings.favicon_svg.url }}">{% endif %}
+{% if site_settings.favicon_ico %}<link rel="icon" type="image/x-icon" href="{{ site_settings.favicon_ico.url }}">{% else %}<link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">{% endif %}
+
+{% if organization_json_ld %}
+{# SAFE: organization_json_ld built server-side via json.dumps() — see apps/core/structured_data.py #}
+<script type="application/ld+json">{{ organization_json_ld|safe }}</script>
+{% endif %}
+{% if seo.breadcrumb_ld %}<script type="application/ld+json">{{ seo.breadcrumb_ld|safe }}</script>{% endif %}
+{% block structured_data %}{% endblock %}
+
+<link rel="preload" href="{% static 'fonts/estedad-arabic-wght-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+{% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<a class="skip-link" href="#main-content">پرش به محتوا</a>
+
+<header class="site-header {% block header_class %}{% endblock %}">
+  <div class="container header-inner">
+    <a href="{% url 'home' %}" class="brand" aria-label="{{ site_settings.company_name_fa }} — صفحه اصلی">{% include "partials/brand.html" %}</a>
+
+    <nav class="main-nav" id="main-nav" aria-label="منوی اصلی">
+      <ul>
+        {% for item in main_menu_items %}
+        <li class="{% if item.children.all %}has-children{% endif %}">
+          <a href="{{ item.url }}" {% if request.path == item.url %}class="is-active" aria-current="page"{% endif %} {% if item.open_in_new_tab %}target="_blank" rel="noopener"{% endif %}>{{ item.title }}</a>
+          {% if item.children.all %}
+          <ul class="submenu" role="menu">
+            {% for child in item.children.all %}
+            <li role="none"><a role="menuitem" href="{{ child.url }}" {% if child.open_in_new_tab %}target="_blank" rel="noopener"{% endif %}>{{ child.title }}</a></li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <a href="{% url 'contact:index' %}#consultation" class="header-cta">درخواست مشاوره</a>
+    <button class="menu-toggle" aria-label="باز و بسته کردن منو" aria-controls="main-nav" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="main-content">
+  {% block messages %}{% if messages %}
+  <div class="container messages" role="status">
+    {% for message in messages %}<div class="message message--{{ message.tags }}">{{ message }}</div>{% endfor %}
+  </div>
+  {% endif %}{% endblock %}
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="container ft-top">
+    <p class="ft-title">{{ site_settings.footer_text|default:"پروژه‌ی نورپردازی دارید؟ درباره‌اش با ما صحبت کنید." }}</p>
+    <div>
+      {% if site_settings.phone %}<a class="tel" href="tel:{{ site_settings.phone }}" dir="ltr">{{ site_settings.phone }}</a>{% endif %}
+      <a class="tlink" href="{% url 'contact:index' %}#consultation">درخواست مشاوره</a>
+    </div>
+  </div>
+  <div class="container ft-mid">
+    <div class="ft-brand">
+      <a href="{% url 'home' %}" class="brand" aria-label="{{ site_settings.company_name_fa }}">{% include "partials/brand.html" %}</a>
+      <p>{{ site_settings.slogan }}</p>
+    </div>
+    <nav aria-label="پیوندهای سایت">
+      <p class="ft-h">سایت</p>
+      <ul>
+        {% for item in footer_menu_items %}<li><a href="{{ item.url }}">{{ item.title }}</a></li>{% endfor %}
+        <li><a href="{% url 'products:list' %}">ریسه نوری</a></li>
+      </ul>
+    </nav>
+    <div class="ft-contact">
+      <p class="ft-h">تماس</p>
+      {% if site_settings.phone %}<p><a href="tel:{{ site_settings.phone }}" dir="ltr">{{ site_settings.phone }}</a></p>{% else %}<p><a href="{% url 'contact:index' %}">فرم تماس و درخواست مشاوره</a></p>{% endif %}
+      <p>
+        {% if site_settings.instagram_url %}<a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener">اینستاگرام</a>&nbsp; {% endif %}
+        {% if site_settings.telegram_link %}<a href="{{ site_settings.telegram_link }}" target="_blank" rel="noopener">تلگرام</a>&nbsp; {% endif %}
+        {% if site_settings.whatsapp_link %}<a href="{{ site_settings.whatsapp_link }}" target="_blank" rel="noopener">واتس‌اپ</a>{% endif %}
+      </p>
+    </div>
+  </div>
+  <div class="container ft-bottom"><span>{{ site_settings.copyright_text|default:site_settings.company_name_fa }}</span><a href="{% url 'gallery:index' %}">آثار</a></div>
+</footer>
+
+<div class="mbar">
+  <a href="{% url 'contact:index' %}#consultation">درخواست مشاوره</a>
+  {% if site_settings.phone %}<a href="tel:{{ site_settings.phone }}">تماس</a>{% else %}<a href="{% url 'contact:index' %}">تماس با ما</a>{% endif %}
+</div>
+
+<script src="{% static 'js/main.js' %}" defer></script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

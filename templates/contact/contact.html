@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="page-head"><div class="container">{% include "partials/breadcrumbs.html" with items=breadcrumb_items %}<h1>برای پروژه‌ی شما، گفت‌وگو را شروع کنیم</h1><p>پروژه‌ها با مشاوره آغاز می‌شوند؛ با تماس، درخواست مشاوره یا ارسال پیام با ما در ارتباط باشید.</p></div></header>
+<section class="section on-light" style="padding-top:3.5rem">
+  <div class="container contact">
+    <aside>
+      <h2 class="h2" style="font-size:1.5rem">اطلاعات تماس</h2>
+      <ul class="cl">
+        {% if site_settings.phone %}<li><small>شماره تماس</small><a href="tel:{{ site_settings.phone }}" dir="ltr">{{ site_settings.phone }}</a></li>{% endif %}
+        {% if site_settings.whatsapp_link %}<li><small>واتس‌اپ</small><a href="{{ site_settings.whatsapp_link }}" target="_blank" rel="noopener">پیام در واتس‌اپ</a></li>{% endif %}
+        {% if site_settings.telegram_link %}<li><small>تلگرام</small><a href="{{ site_settings.telegram_link }}" target="_blank" rel="noopener">پیام در تلگرام</a></li>{% endif %}
+        {% if site_settings.instagram_url %}<li><small>اینستاگرام</small><a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener">صفحه‌ی اینستاگرام</a></li>{% endif %}
+        {% if not site_settings.phone and not site_settings.instagram_url %}<li><small>اطلاعات تماس</small><span>از فرم‌های کنار صفحه استفاده کنید.</span></li>{% endif %}
+      </ul>
+    </aside>
+    <div data-tabs>
+      <div class="tabs-dark" role="tablist">
+        <button type="button" class="tab is-active" role="tab" data-tab="consultation">درخواست مشاوره</button>
+        <button type="button" class="tab" role="tab" data-tab="design">درخواست طراحی و اجرا</button>
+        <button type="button" class="tab" role="tab" data-tab="message">فرم تماس</button>
+      </div>
+      <div class="tab-panel" data-panel="consultation" id="consultation">
+        <p style="color:var(--ink-soft)">برای پروژه‌ی نورپردازی شهر یا مجموعه‌ی خود مشاوره بگیرید؛ کارشناسان ما تماس می‌گیرند.</p>
+        <form method="post" novalidate>{% csrf_token %}<input type="hidden" name="form_type" value="consultation">
+          {% include "partials/form_fields.html" with form=consultation_form %}
+          <button class="btn btn--dark btn--lg btn--block" style="margin-top:1.4rem" type="submit">ارسال درخواست مشاوره</button></form>
+      </div>
+      <div class="tab-panel" data-panel="design" id="design" hidden>
+        <p style="color:var(--ink-soft)">برای طراحی و اجرای المان، لوستر یا نورپردازی اختصاصی، همان فرم درخواست مشاوره را پر کنید و در فیلد «نوع پروژه» عبارت «طراحی و اجرا» را بنویسید؛ نیاز خود را در توضیحات شرح دهید.</p>
+        <button type="button" class="btn btn--dark" data-goto-tab="consultation" data-fill="id_project_type" data-value="طراحی و اجرا">رفتن به فرم درخواست</button>
+      </div>
+      <div class="tab-panel" data-panel="message" id="message" hidden>
+        <form method="post" novalidate>{% csrf_token %}<input type="hidden" name="form_type" value="message">
+          {% include "partials/form_fields.html" with form=contact_form %}
+          <button class="btn btn--dark btn--lg btn--block" style="margin-top:1.4rem" type="submit">ارسال پیام</button></form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0d1f40">
+<meta name="robots" content="noindex, nofollow">
+<title>{{ site_settings.maintenance_title|default:"سایت در حال به‌روزرسانی است" }} | {{ site_settings.company_name_fa }}</title>
+{% if site_settings.favicon_ico %}<link rel="icon" type="image/x-icon" href="{{ site_settings.favicon_ico.url }}">{% else %}<link rel="icon" type="image/svg+xml" href="{% static 'img/favicon.svg' %}">{% endif %}
+<link rel="preload" href="{% static 'fonts/estedad-arabic-wght-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body class="mt-body">
+<main class="mt">
+  <div class="container mt__in">
+    <a href="/" class="brand mt__brand" aria-label="{{ site_settings.company_name_fa }}">{% include "partials/brand.html" %}</a>
+    <div class="mt__code" aria-hidden="true">{% for i in "123" %}<i></i>{% endfor %}</div>
+    <p class="kicker">در دست تعمیر</p>
+    <h1 class="mt__title">{{ site_settings.maintenance_title|default:"سایت در حال به‌روزرسانی است" }}</h1>
+    {% if site_settings.maintenance_message %}<p class="lead mt__msg">{{ site_settings.maintenance_message|linebreaksbr }}</p>{% endif %}
+    {% if site_settings.phone or site_settings.whatsapp_link or site_settings.telegram_link or site_settings.instagram_url %}
+    <div class="mt__contact">
+      {% if site_settings.phone %}<a class="btn btn--gold btn--lg" href="tel:{{ site_settings.phone }}" dir="ltr">{{ site_settings.phone }}</a>{% endif %}
+      <p>
+        {% if site_settings.whatsapp_link %}<a class="tlink" href="{{ site_settings.whatsapp_link }}" target="_blank" rel="noopener">واتس‌اپ</a>{% endif %}
+        {% if site_settings.telegram_link %}<a class="tlink" href="{{ site_settings.telegram_link }}" target="_blank" rel="noopener">تلگرام</a>{% endif %}
+        {% if site_settings.instagram_url %}<a class="tlink" href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener">اینستاگرام</a>{% endif %}
+      </p>
+    </div>
+    {% endif %}
+  </div>
+</main>
+</body>
+</html>

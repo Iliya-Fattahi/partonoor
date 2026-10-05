@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block header_class %}{% endblock %}
+{% block content %}
+{% if rendered_sections %}
+  {% for html in rendered_sections %}{{ html|safe }}{% endfor %}
+{% elif show_staff_empty_homepage_notice %}
+  <section class="page-hero"><div class="container"><h1>صفحه اصلی هنوز خالی است</h1><p>از پنل مدیریت ← «ظاهر سایت» بخش‌های صفحه اصلی را فعال کنید. این پیام فقط به مدیران سایت نمایش داده می‌شود.</p><p><a class="btn btn--gold" href="/admin/">ورود به پنل مدیریت</a></p></div></section>
+{% else %}
+  <section class="page-hero"><div class="container"><h1>به‌زودی</h1></div></section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load image_tags persian %}
+{% block structured_data %}
+{# SAFE: json_ld/breadcrumb_json_ld built server-side via json.dumps() — see apps/core/structured_data.py #}
+<script type="application/ld+json">{{ json_ld|safe }}</script>
+{% endblock %}
+{% block content %}
+<header class="feature__hero" style="min-height:88vh;background:var(--navy-950)">
+  {% pic project.cover_image alt=project.title eager=True sizes="100vw" %}
+  <div class="container" style="padding-top:9rem"><div class="feature__text">
+    {% include "partials/breadcrumbs.html" with items=breadcrumb_items %}
+    <span class="kicker">مطالعه‌ی موردی{% if project.category %} · {{ project.category.title }}{% endif %}</span>
+    <h1>{{ project.title }}</h1>
+    <p>{{ project.short_description }}</p>
+  </div></div>
+</header>
+{% if project.city or project.location or project.year or project.client %}
+<div class="cs-facts"><div class="container" style="display:flex;flex-wrap:wrap">
+  {% if project.city %}<div><small>شهر</small><b>{{ project.city }}</b></div>{% endif %}
+  {% if project.location %}<div><small>محل اجرا</small><b>{{ project.location }}</b></div>{% endif %}
+  {% if project.year %}<div><small>سال</small><b>{{ project.year }}</b></div>{% endif %}
+  {% if project.client %}<div><small>کارفرما</small><b>{{ project.client }}</b></div>{% endif %}
+</div></div>
+{% endif %}
+
+{% if project.full_description %}
+<section class="section" style="padding-bottom:2rem"><div class="container cs-intro">
+  <div><span class="kicker">درباره‌ی پروژه</span></div>
+  <div>{{ project.full_description|linebreaks }}</div>
+</div></section>
+{% endif %}
+
+{% for stage_key, stage_title, stage_text in stages %}
+<section class="cs-stage" id="stage-{{ stage_key }}"><div class="container">
+  <div class="cs-stage__head">
+    <div><b>{{ forloop.counter }}</b></div>
+    <div><h2>{{ stage_title }}</h2>{% if stage_text %}<p>{{ stage_text }}</p>{% endif %}</div>
+  </div>
+  {% for group in stage_groups %}{% if group.key == stage_key %}
+    {% if group.lead %}<a class="cs-lead" data-lightbox="proj" data-caption="{{ group.lead.title }}" href="{{ group.lead.image.url }}">{% pic group.lead.image alt=group.lead.alt_text|default:group.lead.title|default:project.title sizes="(max-width:1200px) 100vw, 1200px" %}</a>{% endif %}
+    {% if group.rest %}<div class="cs-pair">{% for img in group.rest %}<a data-lightbox="proj" data-caption="{{ img.title }}" href="{{ img.image.url }}">{% pic img.image alt=img.alt_text|default:img.title|default:project.title sizes="(max-width:720px) 100vw, 50vw" %}</a>{% endfor %}</div>{% endif %}
+  {% endif %}{% endfor %}
+</div></section>
+{% endfor %}
+
+{% if project.videos.all %}
+<section class="video">{% for v in project.videos.all %}<div class="video__frame"><video controls preload="none" playsinline poster="{{ v.poster.url }}" aria-label="{{ v.title }}"><source src="{{ v.video.url }}"></video></div>{% endfor %}</section>
+{% endif %}
+
+{% if works_category %}<section class="section"><div class="container"><p class="lead">تصاویر بیشتر این پروژه در گالری آثار، دسته‌ی «{{ works_category.title }}»:</p><a class="tlink" href="{% url 'gallery:category' works_category.slug %}">مشاهده‌ی آثار مرتبط ({{ works_category.title }})</a></div></section>{% endif %}
+<section class="section cta"><div class="container cta__in reveal">
+  <h2>پروژه‌ای شبیه «{{ project.title }}» برای شهر شما؟</h2>
+  <div class="cta__side"><p>پروژه‌ها فرم سفارش ندارند. ابتدا گفت‌وگو می‌کنیم تا نیاز، فضا و داستان شهر شما را بشناسیم.</p><a class="btn btn--gold btn--lg" href="{% url 'contact:index' %}#consultation">درخواست مشاوره</a>{% if site_settings.phone %}<span class="cta__phone">{{ site_settings.phone }}</span>{% endif %}</div>
+</div></section>
+{% endblock %}

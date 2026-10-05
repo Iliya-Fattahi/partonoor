@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load image_tags persian %}
+{% block structured_data %}
+{# SAFE: json_ld/breadcrumb_json_ld built server-side via json.dumps() — see apps/core/structured_data.py #}
+<script type="application/ld+json">{{ json_ld|safe }}</script>
+{% endblock %}
+{% block messages %}{% endblock %}
+{% block content %}
+<header class="feature__hero" style="min-height:82vh;background:var(--navy-950)">
+  {% pic product.main_image alt=product.title eager=True sizes="100vw" %}
+  <div class="container" style="padding-top:9rem"><div class="feature__text">
+    {% include "partials/breadcrumbs.html" with items=breadcrumb_items %}
+    <span class="kicker">محصول قابل سفارش</span>
+    <h1>{{ product.title }}</h1>
+    <p>{{ product.short_description }}</p>
+    <a class="btn btn--gold btn--lg" href="#order">{{ product.order_cta_label|default:"ثبت سفارش ریسه" }}</a>
+  </div></div>
+</header>
+{% if product.features.all %}
+<section class="section on-light"><div class="container">
+  <div style="max-width:40rem;margin-bottom:2.5rem"><span class="kicker">چرا ریسه {{ site_settings.company_name_fa }}</span><h2 class="h2">مزیت‌های ریسه</h2></div>
+  <div class="svc-rows">{% for f in product.features.all %}<div class="svc-row"><i>{{ forloop.counter|fa_digits }}</i><h3>{{ f.title }}</h3><p>{{ f.description }}</p></div>{% endfor %}</div>
+</div></section>
+{% endif %}
+{% if product.full_description %}
+<section class="section"><div class="container cs-intro"><div><span class="kicker">درباره‌ی محصول</span></div><div>{{ product.full_description|linebreaks }}</div></div></section>
+{% endif %}
+{% if product.images.all or product.videos.all %}
+<section class="section on-deep"><div class="container">
+  <span class="kicker">تصاویر و ویدیو</span><h2 class="h2" style="margin-bottom:2rem">ریسه در عمل</h2>
+  <div class="grid-works">
+    {% for img in product.images.all %}<a class="work" data-lightbox="prod" data-caption="{{ img.alt_text }}" href="{{ img.image.url }}">{% pic img.image alt=img.alt_text|default:product.title sizes="(max-width:720px) 100vw, 33vw" %}</a>{% endfor %}
+    {% for v in product.videos.all %}<a class="work work--video" data-lightbox="prod" data-type="video" data-caption="{{ v.title }}" href="{{ v.video.url }}"><img src="{{ v.poster.url }}" alt="{{ v.title|default:product.title }}" loading="lazy" width="800" height="600"></a>{% endfor %}
+  </div>
+</div></section>
+{% endif %}
+<section class="section on-light" id="order">
+  <div class="container order">
+    <div>
+      <span class="kicker">ثبت سفارش</span>
+      <h2 class="h2">سفارش ریسه</h2>
+      <p class="lead">اطلاعات موردنیاز را وارد کنید. پرداخت آنلاین وجود ندارد؛ سفارش شما ثبت می‌شود و برای هماهنگی نهایی با شما تماس می‌گیریم.</p>
+      <p class="note"><b>پروژه‌ی اختصاصی دارید؟</b> پروژه‌ها (المان، لوستر، نورپردازی شهری) از طریق این فرم سفارش داده نمی‌شوند. <a class="tlink" href="{% url 'contact:index' %}#consultation">درخواست مشاوره</a></p>
+    </div>
+    <div>
+      {% for message in messages %}<div class="message message--{{ message.tags }}">{{ message }}</div>{% endfor %}
+      <form method="post" action="#order" novalidate>{% csrf_token %}
+        {% include "partials/form_fields.html" with form=order_form %}
+        <button class="btn btn--dark btn--lg btn--block" style="margin-top:1.5rem" type="submit">ثبت سفارش</button>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}

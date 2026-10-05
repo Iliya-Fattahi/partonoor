@@ -1,0 +1,23 @@
+{% load persian %}
+<section class="section" id="works">
+  <div class="container">
+    <div class="process__head" style="position:static;margin-bottom:3rem;max-width:40rem">
+      <span class="kicker">{{ section.kicker|default:"آثار" }}</span>
+      <h2 class="h2">{{ section.title|default:"آثار ما در شهرها" }}</h2>
+      {% if section.subtitle %}<p class="lead">{{ section.subtitle }}</p>{% endif %}
+    </div>
+    {% if work_categories %}
+    <div class="works-index" data-works-index>
+      <div class="wi-list">
+        {% for cat in work_categories %}
+        <a href="{{ cat.url }}" data-img="wi-{{ forloop.counter }}"><b>{{ cat.title }}</b><small>{{ cat.count|fa_digits }} اثر</small></a>
+        {% endfor %}
+      </div>
+      <div class="wi-img" aria-hidden="true">
+        {% for cat in work_categories %}{% if cat.cover_url %}<img id="wi-{{ forloop.counter }}" class="{% if forloop.first %}is-on{% endif %}" src="{{ cat.cover_url }}" alt="" width="1200" height="800" loading="lazy" decoding="async">{% endif %}{% endfor %}
+      </div>
+    </div>
+    <p style="margin-top:2.4rem"><a class="tlink" href="{% url 'gallery:index' %}">{{ section.cta_label|default:"مشاهده‌ی همه‌ی آثار" }}</a></p>
+    {% endif %}
+  </div>
+</section>

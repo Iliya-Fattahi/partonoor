@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block robots %}noindex, nofollow{% endblock %}
+{% block content %}
+<section class="err"><div class="container"><div class="code">403</div><h1 class="h2" style="margin:.6rem 0 .4rem">دسترسی مجاز نیست</h1><p class="lead">برای دیدن این صفحه دسترسی لازم را ندارید.</p><p style="margin-top:1.8rem"><a class="btn btn--gold btn--lg" href="{% url 'home' %}">بازگشت به صفحه اصلی</a> &nbsp; <a class="tlink" href="{% url 'gallery:index' %}">دیدن آثار</a></p></div></section>
+{% endblock %}

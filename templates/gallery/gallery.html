@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load persian %}
+{% block content %}
+<header class="page-head">
+  <div class="container">
+    {% include "partials/breadcrumbs.html" with items=breadcrumb_items %}
+    <h1>آثار و نمونه کارها</h1>
+    <p>نمونه‌هایی از المان‌های نوری، لوسترهای شهری و ریسه‌هایی که طراحی، ساخت و اجرا کرده‌ایم؛ هر دسته صفحه‌ی خودش را دارد.</p>
+  </div>
+</header>
+<section class="section" style="padding-top:2.6rem">
+  <div class="container">
+    {% if groups %}
+    <nav class="tabs-line" aria-label="دسته‌بندی آثار">
+      <a class="is-active" href="{% url 'gallery:index' %}" aria-current="page">همه‌ی آثار<small>{{ total|fa_digits }}</small></a>
+      {% for cat in categories %}<a href="{{ cat.url }}">{{ cat.title }}<small>{{ cat.count|fa_digits }}</small></a>{% endfor %}
+    </nav>
+    {% for g in groups %}
+    <section class="work-group" aria-labelledby="g-{{ g.category.pk }}">
+      <div class="work-group__head">
+        <h2 id="g-{{ g.category.pk }}"><a href="{{ g.category.url }}">{{ g.category.title }}</a></h2>
+        <a class="tlink" href="{{ g.category.url }}">همه‌ی {{ g.category.count|fa_digits }} اثر</a>
+      </div>
+      <div class="grid-works">
+        {% for it in g.items %}{% include "partials/work_card.html" with it=it eager=forloop.parentloop.first %}{% endfor %}
+      </div>
+    </section>
+    {% endfor %}
+    {% else %}
+    <div class="empty"><h2>هنوز اثری منتشر نشده است</h2><p>آثار به‌زودی در این بخش قرار می‌گیرند.</p></div>
+    {% endif %}
+  </div>
+</section>
+<section class="section cta"><div class="container cta__in"><h2>پروژه‌ی بعدیِ این مجموعه می‌تواند پروژه‌ی شما باشد</h2><div class="cta__side"><a class="btn btn--gold btn--lg" href="{% url 'contact:index' %}#consultation">درخواست مشاوره</a></div></div></section>
+{% endblock %}

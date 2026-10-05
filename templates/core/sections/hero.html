@@ -1,0 +1,23 @@
+{% load image_tags %}
+<section class="hero" aria-label="معرفی پرتو نور">
+  <div class="hero__media">
+    {% if section.video %}
+      <video autoplay muted loop playsinline preload="metadata" {% if section.video_poster %}poster="{{ section.video_poster.url }}"{% endif %}><source src="{{ section.video.url }}"></video>
+    {% elif section.image %}
+      {% pic section.image alt=section.title eager=True sizes="100vw" %}
+    {% endif %}
+  </div>
+  <div class="container hero__body">
+    <div>
+      <h1>{{ section.title|default:site_settings.slogan }}</h1>
+      {% if section.subtitle %}<p class="lead">{{ section.subtitle }}</p>{% endif %}
+      <div class="hero__actions">
+        <a class="btn btn--gold btn--lg" href="{{ section.cta_url|default:'/gallery/' }}">{{ section.cta_label|default:"مشاهده آثار" }}</a>
+        <a class="tlink" href="{% url 'contact:index' %}#consultation">درخواست مشاوره</a>
+      </div>
+    </div>
+    {% if hero_project %}
+    <a class="hero__caption" href="{{ hero_project.get_absolute_url }}"><b>{{ hero_project.title }}</b>پروژه‌ی ویژه — مطالعه‌ی کامل</a>
+    {% endif %}
+  </div>
+</section>
