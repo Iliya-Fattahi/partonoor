@@ -1,3 +1,4 @@
+```python
 """
 Base settings for the Parto Noor project.
 Nothing environment-specific lives here — see development.py / production.py.
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -48,8 +50,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "apps.core.middleware.SiteSettingsMiddleware",  # injects SiteSettings into every request
-    "apps.core.middleware.MaintenanceModeMiddleware",  # «صفحه‌ی تعمیرات» when enabled in SiteSettings
+    "apps.core.middleware.SiteSettingsMiddleware",
+    "apps.core.middleware.MaintenanceModeMiddleware",
     "apps.core.middleware.SecurityHeadersMiddleware",
 ]
 
@@ -77,10 +79,19 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
-    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator", "OPTIONS": {"min_length": 10}},
-    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
-    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {"min_length": 10},
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"
+    },
 ]
 
 # Internationalization — Persian / RTL first
@@ -96,13 +107,13 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 MEDIA_URL = env("MEDIA_URL", default="/media/")
 
-# Public base URL used for canonical links, sitemap, JSON-LD and robots.txt (no trailing slash).
+# Public base URL used for canonical links, sitemap, JSON-LD and robots.txt.
 SITE_URL = env("SITE_URL", default="http://localhost:8000").rstrip("/")
 MEDIA_ROOT = env("MEDIA_ROOT", default=str(BASE_DIR / "media"))
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# --- Upload safety (see apps/core/validators.py) ---
+# --- Upload safety ---
 ALLOWED_IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp"]
 ALLOWED_IMAGE_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"]
 ALLOWED_VIDEO_EXTENSIONS = [".mp4", ".webm"]
@@ -110,17 +121,26 @@ ALLOWED_VIDEO_MIME_TYPES = ["video/mp4", "video/webm"]
 MAX_IMAGE_UPLOAD_SIZE_MB = 15
 MAX_VIDEO_UPLOAD_SIZE_MB = 300
 
-# --- Email (optional; requests are always stored in DB regardless) ---
-EMAIL_BACKEND = env("EMAIL_BACKEND", default="django.core.mail.backends.console.EmailBackend")
+# --- Email (optional) ---
+EMAIL_BACKEND = env(
+    "EMAIL_BACKEND",
+    default="django.core.mail.backends.console.EmailBackend",
+)
 EMAIL_HOST = env("EMAIL_HOST", default="")
 EMAIL_PORT = env.int("EMAIL_PORT", default=587)
 EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
 EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="no-reply@localhost")
-CONSULTATION_NOTIFY_EMAIL = env("CONSULTATION_NOTIFY_EMAIL", default="")
+DEFAULT_FROM_EMAIL = env(
+    "DEFAULT_FROM_EMAIL",
+    default="no-reply@localhost",
+)
+CONSULTATION_NOTIFY_EMAIL = env(
+    "CONSULTATION_NOTIFY_EMAIL",
+    default="",
+)
 
-# --- Caching (overridden to Redis in production if desired) ---
+# --- Caching ---
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
@@ -133,3 +153,4 @@ LOGIN_URL = "/admin/login/"
 ADMIN_SITE_HEADER = "پنل مدیریت پرتو نور"
 ADMIN_SITE_TITLE = "پرتو نور"
 ADMIN_INDEX_TITLE = "مدیریت محتوا"
+```
