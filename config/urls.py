@@ -31,7 +31,7 @@ urlpatterns = [
     path("robots.txt", robots_txt, name="robots"),
 ]
 
-if settings.DEBUG:
+if True:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Screenshot / local-QA only (settings.shots): production-like DEBUG=False with media served by Django,
