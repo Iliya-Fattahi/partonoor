@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
+from apps.core.seed_media import seed_media
 
 from apps.core.admin_site import partonoor_admin_site
 from apps.core.views import home_view, search_view
@@ -14,6 +15,7 @@ def robots_txt(request):
 
 
 urlpatterns = [
+    path("media/<path:path>", seed_media, name="seed_media"),
     path("admin/", partonoor_admin_site.urls),
 
     path("", home_view, name="home"),
